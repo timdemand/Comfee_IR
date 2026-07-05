@@ -6,7 +6,7 @@ from homeassistant.config_entries import ConfigEntry
 
 from .const import DOMAIN
 
-PLATFORMS = [Platform.CLIMATE]
+PLATFORMS = [Platform.CLIMATE, Platform.BUTTON]
 
 
 async def async_setup(hass: HomeAssistant, config: dict) -> bool:
