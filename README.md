@@ -4,7 +4,9 @@ Custom Home Assistant integration for generating Comfee IR Tuya payloads and sen
 
 Repository: https://github.com/timdemand/Comfee_IR
 
-[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=timdemand&repository=Comfee_IR)
+[Add as HACS Custom Repository (Integration)](https://my.home-assistant.io/redirect/hacs_repository/?owner=timdemand&repository=Comfee_IR&category=integration)
+
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=timdemand&repository=Comfee_IR&category=integration)
 
 ## Installation
 
