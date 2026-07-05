@@ -1,0 +1,16 @@
+{
+  "domain": "comfee_ir",
+  "name": "Comfee IR",
+  "version": "0.1.0",
+  "documentation": "https://github.com/timdemand/Comfee_IR",
+  "issue_tracker": "https://github.com/timdemand/Comfee_IR/issues",
+  "integration_type": "hub",
+  "iot_class": "local_push",
+  "config_flow": true,
+  "codeowners": [
+    "@tim"
+  ],
+  "loggers": [
+    "custom_components.comfee_ir"
+  ]
+}

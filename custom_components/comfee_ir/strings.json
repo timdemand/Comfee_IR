@@ -1,0 +1,20 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Comfee IR Climate Setup",
+        "description": "Configure your Comfee AC IR transmitter. Enter the text entity ID from your transmitter device (e.g., {example_entity}).",
+        "data": {
+          "name": "Name",
+          "text_entity_id": "Text Entity ID"
+        },
+        "data_description": {
+          "text_entity_id": "The text entity that will receive IR codes from this integration"
+        }
+      }
+    },
+    "error": {
+      "invalid_entity_id": "Entity ID must start with 'text.'"
+    }
+  }
+}
