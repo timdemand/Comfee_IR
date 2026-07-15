@@ -7,7 +7,7 @@ import io
 from bisect import bisect
 from struct import pack
 
-from homeassistant.components.infrared import InfraredCommand
+from infrared_protocols.commands import Command as InfraredCommandBase
 
 
 def _reverse_byte(b: int) -> int:
@@ -123,9 +123,24 @@ def _encode_tuya_ir(signal: list[int]) -> str:
     return base64.b64encode(out.getvalue()).decode("ascii")
 
 
-def build_infrared_command(semantic_bytes: list[int], modulation: int = 38000) -> InfraredCommand:
+class ComfeeInfraredCommand(InfraredCommandBase):
+    """Concrete infrared command implementation for Comfee IR transmissions."""
+
+    def __init__(self, timings: list[int], modulation: int) -> None:
+        self._timings = timings
+        self._modulation = modulation
+
+    @property
+    def modulation(self) -> int:
+        return self._modulation
+
+    def get_raw_timings(self) -> list[int]:
+        return self._timings
+
+
+def build_infrared_command(semantic_bytes: list[int], modulation: int = 38000) -> ComfeeInfraredCommand:
     """Build a native Home Assistant infrared command from the Comfee frame."""
     frame = build_frame(semantic_bytes)
     inv_frame = bytes((x ^ 0xFF) for x in frame)
     signal = _frame_to_signal(frame) + [4500] + _frame_to_signal(inv_frame)
-    return InfraredCommand(timings=signal, modulation=modulation)
+    return ComfeeInfraredCommand(timings=signal, modulation=modulation)

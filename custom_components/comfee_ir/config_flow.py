@@ -5,6 +5,7 @@ from typing import Any, Dict, Optional
 import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.const import CONF_NAME
+from homeassistant.helpers import entity_registry as er, selector
 
 from .const import (
     CONF_INFRARED_EMITTER_ENTITY_ID,
@@ -39,10 +40,35 @@ class ComfeeIRConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     data=user_input,
                 )
 
+        entity_registry = er.async_get(self.hass)
+        emitter_candidates = []
+        for entity_id in self.hass.states.async_entity_ids():
+            domain = entity_id.split(".", 1)[0]
+            if domain not in {"switch", "remote"}:
+                continue
+
+            entry = entity_registry.async_get(entity_id)
+            normalized_id = entity_id.lower()
+            is_likely_ir_emitter = (
+                (entry is not None and entry.platform == "infrared")
+                or any(marker in normalized_id for marker in ("ir", "blaster", "emit", "emitter"))
+            )
+            if is_likely_ir_emitter:
+                emitter_candidates.append(entity_id)
+
+        if not emitter_candidates:
+            emitter_candidates = [
+                entity_id
+                for entity_id in self.hass.states.async_entity_ids()
+                if entity_id.split(".", 1)[0] in {"switch", "remote"}
+            ]
+
         data_schema = vol.Schema(
             {
                 vol.Optional(CONF_NAME, default=DEFAULT_NAME): str,
-                vol.Required(CONF_INFRARED_EMITTER_ENTITY_ID): str,
+                vol.Required(CONF_INFRARED_EMITTER_ENTITY_ID): selector.EntitySelector(
+                    selector.EntitySelectorConfig(include_entities=sorted(emitter_candidates))
+                ),
             }
         )
 
