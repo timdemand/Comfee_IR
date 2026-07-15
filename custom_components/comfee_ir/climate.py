@@ -90,6 +90,7 @@ async def async_setup_entry(
 class ComfeeIrClimateEntity(ClimateEntity, InfraredEmitterConsumerEntity):
     _attr_has_entity_name = False
     _attr_should_poll = False
+    _attr_assumed_state = True
     _attr_supported_features = (
         ClimateEntityFeature.TARGET_TEMPERATURE
         | ClimateEntityFeature.FAN_MODE
