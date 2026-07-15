@@ -9,7 +9,7 @@ This integration generates Comfee AC Tuya IR payloads on demand and sends them d
 
 ## Options
 
-- `text_entity_id` (required): Target text entity of your IR transmitter.
+- `infrared_emitter_entity_id` (required): Home Assistant infrared emitter entity that will transmit the commands.
 - `name` (optional, default `Comfee IR`)
 
 ## Supported Modes

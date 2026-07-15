@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from homeassistant.components.climate import ClimateEntity, ClimateEntityFeature, HVACMode
+from homeassistant.components.infrared import InfraredCommand, InfraredEmitterConsumerEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_NAME, UnitOfTemperature
 from homeassistant.core import HomeAssistant
@@ -12,14 +13,14 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.util import slugify
 
 from .const import (
-    CONF_TEXT_ENTITY_ID,
+    CONF_INFRARED_EMITTER_ENTITY_ID,
     DEFAULT_NAME,
     DOMAIN,
     FAN_MODES,
     MAX_TEMP,
     MIN_TEMP,
 )
-from .tuya_ir import build_frame, encode_command, send_ir_command
+from .tuya_ir import build_infrared_command
 
 INITIAL_TARGET_TEMP = 21
 INITIAL_FAN_MODE = "low"
@@ -68,9 +69,9 @@ def _build_semantic_frame(hvac_mode: HVACMode, temp_c: int, fan_mode: str, power
     return [0xA1, sem_b1, sem_b2, 0xFF, 0xFF]
 
 
-def generate_command(hvac_mode: HVACMode, temp_c: int, fan_mode: str, power_on: bool) -> str:
+def generate_command(hvac_mode: HVACMode, temp_c: int, fan_mode: str, power_on: bool) -> InfraredCommand:
     semantic_frame = _build_semantic_frame(hvac_mode, temp_c, fan_mode, power_on)
-    return encode_command(build_frame(semantic_frame))
+    return build_infrared_command(semantic_frame)
 
 
 async def async_setup_entry(
@@ -81,14 +82,15 @@ async def async_setup_entry(
     """Set up Comfee IR climate from config entry."""
     entity = ComfeeIrClimateEntity(
         name=entry.data.get(CONF_NAME, DEFAULT_NAME),
-        text_entity_id=entry.data[CONF_TEXT_ENTITY_ID],
+        infrared_emitter_entity_id=entry.data[CONF_INFRARED_EMITTER_ENTITY_ID],
     )
     async_add_entities([entity])
 
 
-class ComfeeIrClimateEntity(ClimateEntity):
+class ComfeeIrClimateEntity(ClimateEntity, InfraredEmitterConsumerEntity):
     _attr_has_entity_name = False
     _attr_should_poll = False
+    _attr_assumed_state = True
     _attr_supported_features = (
         ClimateEntityFeature.TARGET_TEMPERATURE
         | ClimateEntityFeature.FAN_MODE
@@ -103,13 +105,13 @@ class ComfeeIrClimateEntity(ClimateEntity):
         self,
         *,
         name: str,
-        text_entity_id: str,
+        infrared_emitter_entity_id: str,
     ) -> None:
         self._attr_name = name
-        self._text_entity_id = text_entity_id
-        self._attr_unique_id = f"{DOMAIN}_{slugify(text_entity_id)}"
+        self._infrared_emitter_entity_id = infrared_emitter_entity_id
+        self._attr_unique_id = f"{DOMAIN}_{slugify(infrared_emitter_entity_id)}"
         self._attr_device_info = DeviceInfo(
-            identifiers={(DOMAIN, text_entity_id)},
+            identifiers={(DOMAIN, infrared_emitter_entity_id)},
             name=name,
             manufacturer="Comfee",
             model="IR Climate",
@@ -193,5 +195,3 @@ class ComfeeIrClimateEntity(ClimateEntity):
         self._attr_target_temperature = max(MIN_TEMP, min(MAX_TEMP, int(temp)))
         self._attr_fan_mode = effective_fan
 
-    async def _send_command(self, tuya_payload: str) -> None:
-        await send_ir_command(self.hass, self._text_entity_id, tuya_payload)
