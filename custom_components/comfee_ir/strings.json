@@ -6,15 +6,15 @@
         "description": "Configure your Comfee AC IR transmitter. Enter the text entity ID from your transmitter device (e.g., {example_entity}).",
         "data": {
           "name": "Name",
-          "text_entity_id": "Text Entity ID"
+          "infrared_emitter_entity_id": "Infrared Emitter Entity ID"
         },
         "data_description": {
-          "text_entity_id": "The text entity that will receive IR codes from this integration"
+          "infrared_emitter_entity_id": "The Home Assistant infrared emitter entity that should transmit the commands"
         }
       }
     },
     "error": {
-      "invalid_entity_id": "Entity ID must start with 'text.'"
+      "invalid_entity_id": "Entity ID must include a domain and object ID"
     }
   }
 }

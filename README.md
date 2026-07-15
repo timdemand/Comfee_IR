@@ -1,6 +1,6 @@
 # Comfee IR Climate (Remote)
 
-Custom Home Assistant integration for generating Comfee IR Tuya payloads and sending them through a text entity.
+Custom Home Assistant integration for generating Comfee IR commands and sending them through a native Home Assistant infrared emitter entity.
 
 Repository: https://github.com/timdemand/Comfee_IR
 

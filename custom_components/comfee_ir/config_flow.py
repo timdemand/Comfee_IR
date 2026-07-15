@@ -7,7 +7,7 @@ from homeassistant import config_entries
 from homeassistant.const import CONF_NAME
 
 from .const import (
-    CONF_TEXT_ENTITY_ID,
+    CONF_INFRARED_EMITTER_ENTITY_ID,
     DEFAULT_NAME,
     DOMAIN,
 )
@@ -25,14 +25,14 @@ class ComfeeIRConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         errors: Dict[str, str] = {}
 
         if user_input is not None:
-            text_entity = user_input.get(CONF_TEXT_ENTITY_ID, "").strip()
-            if not text_entity:
-                errors[CONF_TEXT_ENTITY_ID] = "required"
-            elif not text_entity.startswith("text."):
-                errors[CONF_TEXT_ENTITY_ID] = "invalid_entity_id"
+            emitter_entity = user_input.get(CONF_INFRARED_EMITTER_ENTITY_ID, "").strip()
+            if not emitter_entity:
+                errors[CONF_INFRARED_EMITTER_ENTITY_ID] = "required"
+            elif "." not in emitter_entity:
+                errors[CONF_INFRARED_EMITTER_ENTITY_ID] = "invalid_entity_id"
 
             if not errors:
-                await self.async_set_unique_id(text_entity)
+                await self.async_set_unique_id(emitter_entity)
                 self._abort_if_unique_id_configured()
                 return self.async_create_entry(
                     title=user_input.get(CONF_NAME, DEFAULT_NAME),
@@ -42,7 +42,7 @@ class ComfeeIRConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         data_schema = vol.Schema(
             {
                 vol.Optional(CONF_NAME, default=DEFAULT_NAME): str,
-                vol.Required(CONF_TEXT_ENTITY_ID): str,
+                vol.Required(CONF_INFRARED_EMITTER_ENTITY_ID): str,
             }
         )
 
@@ -50,6 +50,6 @@ class ComfeeIRConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             step_id="user",
             data_schema=data_schema,
             errors=errors,
-            description_placeholders={"example_entity": "text.ir_code_to_send"},
+            description_placeholders={"example_entity": "switch.ir_blaster"},
         )
 

@@ -7,9 +7,7 @@ import io
 from bisect import bisect
 from struct import pack
 
-from homeassistant.const import ATTR_ENTITY_ID
-from homeassistant.core import HomeAssistant
-from homeassistant.exceptions import HomeAssistantError
+from homeassistant.components.infrared import InfraredCommand
 
 
 def _reverse_byte(b: int) -> int:
@@ -125,24 +123,9 @@ def _encode_tuya_ir(signal: list[int]) -> str:
     return base64.b64encode(out.getvalue()).decode("ascii")
 
 
-def encode_command(frame: bytes) -> str:
-    """Encode a 6-byte wire frame (plus its bitwise-inverted copy) as a Tuya IR base64 payload."""
+def build_infrared_command(semantic_bytes: list[int], modulation: int = 38000) -> InfraredCommand:
+    """Build a native Home Assistant infrared command from the Comfee frame."""
+    frame = build_frame(semantic_bytes)
     inv_frame = bytes((x ^ 0xFF) for x in frame)
     signal = _frame_to_signal(frame) + [4500] + _frame_to_signal(inv_frame)
-    return _encode_tuya_ir(signal)
-
-
-async def send_ir_command(hass: HomeAssistant, text_entity_id: str, payload: str) -> None:
-    """Send an encoded Tuya IR payload through a text helper entity."""
-    try:
-        await hass.services.async_call(
-            "text",
-            "set_value",
-            {
-                ATTR_ENTITY_ID: text_entity_id,
-                "value": payload,
-            },
-            blocking=True,
-        )
-    except Exception as err:
-        raise HomeAssistantError(f"Failed to send IR command to {text_entity_id}: {err}") from err
+    return InfraredCommand(timings=signal, modulation=modulation)
