@@ -10,6 +10,7 @@
     "infrared"
   ],
   "config_flow": true,
+  "supports_reconfigure": true,
   "codeowners": [
     "@timdemand"
   ],

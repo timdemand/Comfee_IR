@@ -46,8 +46,8 @@ class ComfeeIRConfigFlow(ConfigFlow, domain=DOMAIN):
 
         data_schema = vol.Schema(
             {
-                vol.Optional(CONF_NAME, default=DEFAULT_NAME): str,
-                vol.Required(CONF_INFRARED_EMITTER_ENTITY_ID): EntitySelector(
+                vol.Optional(CONF_NAME, default=DEFAULT_NAME, description="Device Name"): str,
+                vol.Required(CONF_INFRARED_EMITTER_ENTITY_ID, description="Infrared Emitter"): EntitySelector(
                     EntitySelectorConfig(
                         domain=INFRARED_DOMAIN,
                         include_entities=emitter_entity_ids,
@@ -93,10 +93,12 @@ class ComfeeIRConfigFlow(ConfigFlow, domain=DOMAIN):
                 vol.Optional(
                     CONF_NAME,
                     default=config_entry.data.get(CONF_NAME, DEFAULT_NAME),
+                    description="Device Name",
                 ): str,
                 vol.Required(
                     CONF_INFRARED_EMITTER_ENTITY_ID,
                     default=config_entry.data.get(CONF_INFRARED_EMITTER_ENTITY_ID),
+                    description="Infrared Emitter",
                 ): EntitySelector(
                     EntitySelectorConfig(
                         domain=INFRARED_DOMAIN,
