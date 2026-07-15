@@ -43,25 +43,18 @@ class ComfeeIRConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         entity_registry = er.async_get(self.hass)
         emitter_candidates = []
         for entity_id in self.hass.states.async_entity_ids():
-            domain = entity_id.split(".", 1)[0]
-            if domain not in {"switch", "remote"}:
+            entry = entity_registry.async_get(entity_id)
+            if entry is not None and entry.platform == "infrared":
+                emitter_candidates.append(entity_id)
                 continue
 
-            entry = entity_registry.async_get(entity_id)
-            normalized_id = entity_id.lower()
-            is_likely_ir_emitter = (
-                (entry is not None and entry.platform == "infrared")
-                or any(marker in normalized_id for marker in ("ir", "blaster", "emit", "emitter"))
-            )
-            if is_likely_ir_emitter:
-                emitter_candidates.append(entity_id)
+            domain = entity_id.split(".", 1)[0]
+            if domain not in {"switch", "remote", "button"}:
+                continue
 
-        if not emitter_candidates:
-            emitter_candidates = [
-                entity_id
-                for entity_id in self.hass.states.async_entity_ids()
-                if entity_id.split(".", 1)[0] in {"switch", "remote"}
-            ]
+            normalized_id = entity_id.lower()
+            if any(marker in normalized_id for marker in ("ir", "blaster", "emit", "emitter", "remote")):
+                emitter_candidates.append(entity_id)
 
         data_schema = vol.Schema(
             {
