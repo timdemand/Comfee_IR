@@ -9,6 +9,7 @@
           "infrared_emitter_entity_id": "Infrared Emitter"
         },
         "data_description": {
+          "name": "The name for this Comfee IR Device",
           "infrared_emitter_entity_id": "The Home Assistant infrared emitter entity that will transmit the IR commands"
         }
       },
@@ -20,12 +21,18 @@
           "infrared_emitter_entity_id": "Infrared Emitter"
         },
         "data_description": {
+          "name": "The name for this Comfee IR Device",
           "infrared_emitter_entity_id": "The Home Assistant infrared emitter entity that will transmit the IR commands"
         }
       }
     },
     "error": {
       "no_emitters": "No infrared emitter devices found. Please set up an infrared emitter first."
+    },
+    "abort": {
+      "no_emitters": "No infrared emitter devices found. Please set up an infrared emitter first.",
+      "reconfigure_failed": "Failed to reconfigure. Please try again.",
+      "reconfigure_successful": "Comfee IR reconfiguration complete."
     }
   }
 }
