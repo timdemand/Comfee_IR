@@ -3,18 +3,29 @@
     "step": {
       "user": {
         "title": "Comfee IR Climate Setup",
-        "description": "Configure your Comfee AC IR transmitter. Enter the text entity ID from your transmitter device (e.g., {example_entity}).",
+        "description": "Select the infrared emitter device to transmit commands to your Comfee AC.",
         "data": {
-          "name": "Name",
-          "infrared_emitter_entity_id": "Infrared Emitter Entity ID"
+          "name": "Device Name",
+          "infrared_emitter_entity_id": "Infrared Emitter"
         },
         "data_description": {
-          "infrared_emitter_entity_id": "The Home Assistant infrared emitter entity that should transmit the commands"
+          "infrared_emitter_entity_id": "The Home Assistant infrared emitter entity that will transmit the IR commands"
+        }
+      },
+      "reconfigure": {
+        "title": "Reconfigure Comfee IR",
+        "description": "Update the infrared emitter or device name.",
+        "data": {
+          "name": "Device Name",
+          "infrared_emitter_entity_id": "Infrared Emitter"
+        },
+        "data_description": {
+          "infrared_emitter_entity_id": "The Home Assistant infrared emitter entity that will transmit the IR commands"
         }
       }
     },
     "error": {
-      "invalid_entity_id": "Entity ID must include a domain and object ID"
+      "no_emitters": "No infrared emitter devices found. Please set up an infrared emitter first."
     }
   }
 }

@@ -8,4 +8,4 @@ DEFAULT_NAME = "Comfee IR"
 FAN_MODES = ["low", "high", "auto"]
 
 MIN_TEMP = 17
-MAX_TEMP = 31
+MAX_TEMP = 30
