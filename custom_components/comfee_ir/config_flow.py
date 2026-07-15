@@ -1,11 +1,16 @@
 """Config flow for Comfee IR integration."""
 
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 import voluptuous as vol
 from homeassistant import config_entries
+from homeassistant.components.infrared import (
+    DOMAIN as INFRARED_DOMAIN,
+    async_get_emitters,
+)
+from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
 from homeassistant.const import CONF_NAME
-from homeassistant.helpers import entity_registry as er, selector
+from homeassistant.helpers.selector import EntitySelector, EntitySelectorConfig
 
 from .const import (
     CONF_INFRARED_EMITTER_ENTITY_ID,
@@ -14,53 +19,39 @@ from .const import (
 )
 
 
-class ComfeeIRConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
+class ComfeeIRConfigFlow(ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Comfee IR."""
 
     VERSION = 1
 
     async def async_step_user(
-        self, user_input: Optional[Dict[str, Any]] = None
-    ):
+        self, user_input: Optional[dict[str, Any]] = None
+    ) -> ConfigFlowResult:
         """Handle the initial step."""
-        errors: Dict[str, str] = {}
+        errors: dict[str, str] = {}
+
+        emitter_entity_ids = async_get_emitters(self.hass)
+        if not emitter_entity_ids:
+            return self.async_abort(reason="no_emitters")
 
         if user_input is not None:
-            emitter_entity = user_input.get(CONF_INFRARED_EMITTER_ENTITY_ID, "").strip()
-            if not emitter_entity:
-                errors[CONF_INFRARED_EMITTER_ENTITY_ID] = "required"
-            elif "." not in emitter_entity:
-                errors[CONF_INFRARED_EMITTER_ENTITY_ID] = "invalid_entity_id"
+            emitter_entity_id = user_input[CONF_INFRARED_EMITTER_ENTITY_ID]
 
-            if not errors:
-                await self.async_set_unique_id(emitter_entity)
-                self._abort_if_unique_id_configured()
-                return self.async_create_entry(
-                    title=user_input.get(CONF_NAME, DEFAULT_NAME),
-                    data=user_input,
-                )
-
-        entity_registry = er.async_get(self.hass)
-        emitter_candidates = []
-        for entity_id in self.hass.states.async_entity_ids():
-            entry = entity_registry.async_get(entity_id)
-            if entry is not None and entry.platform == "infrared":
-                emitter_candidates.append(entity_id)
-                continue
-
-            domain = entity_id.split(".", 1)[0]
-            if domain not in {"switch", "remote", "button"}:
-                continue
-
-            normalized_id = entity_id.lower()
-            if any(marker in normalized_id for marker in ("ir", "blaster", "emit", "emitter", "remote")):
-                emitter_candidates.append(entity_id)
+            await self.async_set_unique_id(emitter_entity_id)
+            self._abort_if_unique_id_configured()
+            return self.async_create_entry(
+                title=user_input.get(CONF_NAME, DEFAULT_NAME),
+                data=user_input,
+            )
 
         data_schema = vol.Schema(
             {
                 vol.Optional(CONF_NAME, default=DEFAULT_NAME): str,
-                vol.Required(CONF_INFRARED_EMITTER_ENTITY_ID): selector.EntitySelector(
-                    selector.EntitySelectorConfig(include_entities=sorted(emitter_candidates))
+                vol.Required(CONF_INFRARED_EMITTER_ENTITY_ID): EntitySelector(
+                    EntitySelectorConfig(
+                        domain=INFRARED_DOMAIN,
+                        include_entities=emitter_entity_ids,
+                    )
                 ),
             }
         )
@@ -69,6 +60,6 @@ class ComfeeIRConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             step_id="user",
             data_schema=data_schema,
             errors=errors,
-            description_placeholders={"example_entity": "switch.ir_blaster"},
+            description_placeholders={"example_entity": emitter_entity_ids[0]},
         )
 
