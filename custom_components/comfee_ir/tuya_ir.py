@@ -131,6 +131,10 @@ class ComfeeInfraredCommand(InfraredCommandBase):
         self._modulation = modulation
 
     @property
+    def repeat_count(self) -> int:
+        return 0
+
+    @property
     def modulation(self) -> int:
         return self._modulation
 

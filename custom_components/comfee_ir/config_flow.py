@@ -79,14 +79,19 @@ class ComfeeIRConfigFlow(ConfigFlow, domain=DOMAIN):
             return self.async_abort(reason="no_emitters")
 
         if user_input is not None:
-            config_entry.data = {
-                **config_entry.data,
-                CONF_NAME: user_input.get(CONF_NAME, config_entry.data.get(CONF_NAME, DEFAULT_NAME)),
-                CONF_INFRARED_EMITTER_ENTITY_ID: user_input[CONF_INFRARED_EMITTER_ENTITY_ID],
-            }
-            self.hass.config_entries.async_update_entry(config_entry)
-            await self.hass.config_entries.async_reload(config_entry.entry_id)
-            return self.async_abort(reason="reconfigure_successful")
+            return self.async_update_reload_and_abort(
+                config_entry,
+                data={
+                    **config_entry.data,
+                    CONF_NAME: user_input.get(
+                        CONF_NAME, config_entry.data.get(CONF_NAME, DEFAULT_NAME)
+                    ),
+                    CONF_INFRARED_EMITTER_ENTITY_ID: user_input[
+                        CONF_INFRARED_EMITTER_ENTITY_ID
+                    ],
+                },
+                reason="reconfigure_complete",
+            )
 
         data_schema = vol.Schema(
             {
