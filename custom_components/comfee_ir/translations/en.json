@@ -1,0 +1,38 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Comfee IR Climate Setup",
+        "description": "Select the infrared emitter device to transmit commands to your Comfee AC.",
+        "data": {
+          "name": "Device Name",
+          "infrared_emitter_entity_id": "Infrared Emitter"
+        },
+        "data_description": {
+          "name": "The name for this Comfee IR Device",
+          "infrared_emitter_entity_id": "The Home Assistant infrared emitter entity that will transmit the IR commands"
+        }
+      },
+      "reconfigure": {
+        "title": "Reconfigure Comfee IR",
+        "description": "Update the infrared emitter or device name.",
+        "data": {
+          "name": "Device Name",
+          "infrared_emitter_entity_id": "Infrared Emitter"
+        },
+        "data_description": {
+          "name": "The name for this Comfee IR Device",
+          "infrared_emitter_entity_id": "The Home Assistant infrared emitter entity that will transmit the IR commands"
+        }
+      }
+    },
+    "error": {
+      "no_emitters": "No infrared emitter devices found. Please set up an infrared emitter first."
+    },
+    "abort": {
+      "no_emitters": "No infrared emitter devices found. Please set up an infrared emitter first.",
+      "reconfigure_failed": "Failed to reconfigure. Please try again.",
+      "reconfigure_complete": "Comfee IR reconfiguration complete."
+    }
+  }
+}

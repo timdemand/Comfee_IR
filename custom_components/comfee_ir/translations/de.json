@@ -1,0 +1,38 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Comfee-IR-Klimaanlage einrichten",
+        "description": "Wähle das Infrarot-Sendeobjekt aus, das die Befehle an deine Comfee-Klimaanlage überträgt.",
+        "data": {
+          "name": "Gerätename",
+          "infrared_emitter_entity_id": "Infrarot-Sender"
+        },
+        "data_description": {
+          "name": "Der Name für dieses Comfee-IR-Gerät",
+          "infrared_emitter_entity_id": "Das Home-Assistant-Infrarot-Sendeobjekt, das die IR-Befehle überträgt"
+        }
+      },
+      "reconfigure": {
+        "title": "Comfee IR neu konfigurieren",
+        "description": "Aktualisiere den Infrarot-Sender oder den Gerätenamen.",
+        "data": {
+          "name": "Gerätename",
+          "infrared_emitter_entity_id": "Infrarot-Sender"
+        },
+        "data_description": {
+          "name": "Der Name für dieses Comfee-IR-Gerät",
+          "infrared_emitter_entity_id": "Das Home-Assistant-Infrarot-Sendeobjekt, das die IR-Befehle überträgt"
+        }
+      }
+    },
+    "error": {
+      "no_emitters": "Keine Infrarot-Sendeobjekte gefunden. Richte zuerst ein Infrarotgerät ein."
+    },
+    "abort": {
+      "no_emitters": "Keine Infrarot-Sendeobjekte gefunden. Richte zuerst ein Infrarotgerät ein.",
+      "reconfigure_failed": "Die Neukonfiguration ist fehlgeschlagen. Bitte versuche es erneut.",
+      "reconfigure_complete": "Die Neukonfiguration von Comfee IR ist abgeschlossen."
+    }
+  }
+}
