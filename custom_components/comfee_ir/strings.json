@@ -32,7 +32,7 @@
     "abort": {
       "no_emitters": "No infrared emitter devices found. Please set up an infrared emitter first.",
       "reconfigure_failed": "Failed to reconfigure. Please try again.",
-      "reconfigure_successful": "Comfee IR reconfiguration complete."
+      "reconfigure_complete": "Comfee IR reconfiguration complete."
     }
   }
 }

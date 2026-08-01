@@ -90,7 +90,7 @@ class ComfeeIRConfigFlow(ConfigFlow, domain=DOMAIN):
                         CONF_INFRARED_EMITTER_ENTITY_ID
                     ],
                 },
-                reason="reconfigure_successful",
+                reason="reconfigure_complete",
             )
 
         data_schema = vol.Schema(
