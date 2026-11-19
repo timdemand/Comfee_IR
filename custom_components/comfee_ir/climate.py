@@ -100,6 +100,7 @@ class ComfeeIrClimateEntity(ClimateEntity, InfraredEmitterConsumerEntity):
     _attr_min_temp = MIN_TEMP
     _attr_max_temp = MAX_TEMP
     _attr_target_temperature_step = 1
+    _attr_native_temperature_unit = UnitOfTemperature.CELSIUS
 
     def __init__(
         self,
@@ -132,7 +133,7 @@ class ComfeeIrClimateEntity(ClimateEntity, InfraredEmitterConsumerEntity):
             self._attr_fan_mode = allowed[0]
 
     @property
-    def temperature_unit(self) -> str:
+    def native_temperature_unit(self) -> str:
         return UnitOfTemperature.CELSIUS
 
     async def async_set_hvac_mode(self, hvac_mode: HVACMode) -> None:

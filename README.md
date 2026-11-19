@@ -4,12 +4,28 @@ Custom Home Assistant integration for generating Comfee IR commands and sending 
 
 Repository: https://github.com/timdemand/Comfee_IR
 
-[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=timdemand&repository=Comfee_IR&category=integration)
+[![Open your Home Assistant instance and open a repository in the Marketplace.](https://my.home-assistant.io/badges/marketplace_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=timdemand&repository=Comfee_IR&category=integration)
 
 ## Installation
 
-Add this repository to HACS as a custom repository of type Integration, then install the `comfee_ir` integration.
+### Via Home Assistant Marketplace (Home Assistant 2026.11+)
+
+1. Click the **My Home Assistant** badge above, or navigate to **Settings > Marketplace** in your Home Assistant instance.
+2. In the top right corner, open the menu (three dots) and select **Custom repositories**.
+3. Add `https://github.com/timdemand/Comfee_IR` with category **Integration**.
+4. Find **Comfee IR** in the Marketplace and click **Install**.
+5. Restart Home Assistant if prompted.
+
+### Via Legacy HACS
+
+1. Open **HACS** > **Integrations**.
+2. Click the three dots in the top right corner and select **Custom repositories**.
+3. Add `https://github.com/timdemand/Comfee_IR` as type **Integration**.
+4. Download the repository and restart Home Assistant.
 
 ## Configuration
 
-After installing, add the integration in Home Assistant and select the transmitter text entity.
+After installation:
+1. Go to **Settings > Devices & Services > Add Integration**.
+2. Search for **Comfee IR**.
+3. Select your native Home Assistant infrared emitter entity (`infrared` domain).

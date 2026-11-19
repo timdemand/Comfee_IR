@@ -15,7 +15,7 @@
       },
       "reconfigure": {
         "title": "Reconfigure Comfee IR",
-        "description": "Update the infrared emitter or device name.",
+        "description": "Update the infrared emitter or device name (current emitter: {current_emitter}).",
         "data": {
           "name": "Device Name",
           "infrared_emitter_entity_id": "Infrared Emitter"
@@ -26,13 +26,10 @@
         }
       }
     },
-    "error": {
-      "no_emitters": "No infrared emitter devices found. Please set up an infrared emitter first."
-    },
     "abort": {
+      "already_configured": "Device is already configured",
       "no_emitters": "No infrared emitter devices found. Please set up an infrared emitter first.",
-      "reconfigure_failed": "Failed to reconfigure. Please try again.",
-      "reconfigure_complete": "Comfee IR reconfiguration complete."
+      "reconfigure_successful": "Reconfiguration was successful."
     }
   }
 }
