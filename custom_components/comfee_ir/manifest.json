@@ -15,6 +15,5 @@
   "loggers": [
     "custom_components.comfee_ir"
   ],
-  "supports_reconfigure": true,
   "version": "0.1.4-dev"
 }
