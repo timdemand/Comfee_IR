@@ -1,6 +1,9 @@
 {
   "domain": "comfee_ir",
   "name": "Comfee IR",
+  "categories": [
+    "climate"
+  ],
   "codeowners": [
     "@timdemand"
   ],
