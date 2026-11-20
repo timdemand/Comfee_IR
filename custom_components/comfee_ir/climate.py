@@ -100,6 +100,7 @@ class ComfeeIrClimateEntity(ClimateEntity, InfraredEmitterConsumerEntity):
     _attr_min_temp = MIN_TEMP
     _attr_max_temp = MAX_TEMP
     _attr_target_temperature_step = 1
+    _attr_native_temperature_unit = UnitOfTemperature.CELSIUS
 
     def __init__(
         self,
@@ -119,7 +120,7 @@ class ComfeeIrClimateEntity(ClimateEntity, InfraredEmitterConsumerEntity):
 
         self._attr_hvac_mode = HVACMode.OFF
         self._last_on_mode = HVACMode.COOL
-        self._attr_target_temperature = INITIAL_TARGET_TEMP
+        self._attr_native_target_temperature = INITIAL_TARGET_TEMP
         self._attr_fan_mode = INITIAL_FAN_MODE
 
         self._attr_hvac_modes = [HVACMode.OFF, HVACMode.COOL, HVACMode.DRY, HVACMode.AUTO, HVACMode.FAN_ONLY]
@@ -132,7 +133,7 @@ class ComfeeIrClimateEntity(ClimateEntity, InfraredEmitterConsumerEntity):
             self._attr_fan_mode = allowed[0]
 
     @property
-    def temperature_unit(self) -> str:
+    def native_temperature_unit(self) -> str:
         return UnitOfTemperature.CELSIUS
 
     async def async_set_hvac_mode(self, hvac_mode: HVACMode) -> None:
@@ -143,7 +144,7 @@ class ComfeeIrClimateEntity(ClimateEntity, InfraredEmitterConsumerEntity):
             self.async_write_ha_state()
             return
 
-        await self._send_best_match(hvac_mode, int(self._attr_target_temperature), self._attr_fan_mode)
+        await self._send_best_match(hvac_mode, int(self._attr_native_target_temperature), self._attr_fan_mode)
         self._attr_hvac_mode = hvac_mode
         self._last_on_mode = hvac_mode
         self._update_available_fan_modes(hvac_mode)
@@ -151,7 +152,7 @@ class ComfeeIrClimateEntity(ClimateEntity, InfraredEmitterConsumerEntity):
 
     async def async_set_temperature(self, **kwargs) -> None:
         temp = int(kwargs["temperature"])
-        self._attr_target_temperature = temp
+        self._attr_native_target_temperature = temp
 
         if self._attr_hvac_mode != HVACMode.OFF:
             await self._send_best_match(self._attr_hvac_mode, temp, self._attr_fan_mode)
@@ -164,7 +165,7 @@ class ComfeeIrClimateEntity(ClimateEntity, InfraredEmitterConsumerEntity):
         self._attr_fan_mode = fan_mode
 
         if self._attr_hvac_mode != HVACMode.OFF:
-            await self._send_best_match(self._attr_hvac_mode, int(self._attr_target_temperature), fan_mode)
+            await self._send_best_match(self._attr_hvac_mode, int(self._attr_native_target_temperature), fan_mode)
         self.async_write_ha_state()
 
     async def async_turn_on(self) -> None:
@@ -176,7 +177,7 @@ class ComfeeIrClimateEntity(ClimateEntity, InfraredEmitterConsumerEntity):
     async def _send_off_or_fallback(self) -> None:
         payload = generate_command(
             hvac_mode=self._last_on_mode,
-            temp_c=int(self._attr_target_temperature),
+            temp_c=int(self._attr_native_target_temperature),
             fan_mode=self._attr_fan_mode,
             power_on=False,
         )
@@ -192,6 +193,6 @@ class ComfeeIrClimateEntity(ClimateEntity, InfraredEmitterConsumerEntity):
         )
         await self._send_command(payload)
 
-        self._attr_target_temperature = max(MIN_TEMP, min(MAX_TEMP, int(temp)))
+        self._attr_native_target_temperature = max(MIN_TEMP, min(MAX_TEMP, int(temp)))
         self._attr_fan_mode = effective_fan
 

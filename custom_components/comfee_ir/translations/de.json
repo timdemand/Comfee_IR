@@ -15,7 +15,7 @@
       },
       "reconfigure": {
         "title": "Comfee IR neu konfigurieren",
-        "description": "Aktualisiere den Infrarot-Sender oder den Gerätenamen.",
+        "description": "Aktualisiere den Infrarot-Sender oder den Gerätenamen (aktueller Sender: {current_emitter}).",
         "data": {
           "name": "Gerätename",
           "infrared_emitter_entity_id": "Infrarot-Sender"
@@ -26,13 +26,10 @@
         }
       }
     },
-    "error": {
-      "no_emitters": "Keine Infrarot-Sendeobjekte gefunden. Richte zuerst ein Infrarotgerät ein."
-    },
     "abort": {
+      "already_configured": "Gerät ist bereits konfiguriert",
       "no_emitters": "Keine Infrarot-Sendeobjekte gefunden. Richte zuerst ein Infrarotgerät ein.",
-      "reconfigure_failed": "Die Neukonfiguration ist fehlgeschlagen. Bitte versuche es erneut.",
-      "reconfigure_complete": "Die Neukonfiguration von Comfee IR ist abgeschlossen."
+      "reconfigure_successful": "Die Neukonfiguration war erfolgreich."
     }
   }
 }

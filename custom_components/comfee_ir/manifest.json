@@ -1,20 +1,22 @@
 {
   "domain": "comfee_ir",
   "name": "Comfee IR",
-  "version": "0.1.3",
-  "documentation": "https://github.com/timdemand/Comfee_IR",
-  "issue_tracker": "https://github.com/timdemand/Comfee_IR/issues",
-  "integration_type": "device",
-  "iot_class": "assumed_state",
-  "dependencies": [
-    "infrared"
+  "categories": [
+    "climate"
   ],
-  "config_flow": true,
-  "supports_reconfigure": true,
   "codeowners": [
     "@timdemand"
   ],
+  "config_flow": true,
+  "dependencies": [
+    "infrared"
+  ],
+  "documentation": "https://github.com/timdemand/Comfee_IR",
+  "integration_type": "device",
+  "iot_class": "assumed_state",
+  "issue_tracker": "https://github.com/timdemand/Comfee_IR/issues",
   "loggers": [
     "custom_components.comfee_ir"
-  ]
+  ],
+  "version": "0.1.4-dev"
 }
